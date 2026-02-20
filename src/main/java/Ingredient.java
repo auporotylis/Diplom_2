@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ingredient {
-    private String _id;
+    private String id;
     private String name;
     private String type;
     private String price;
@@ -15,7 +15,7 @@ public class Ingredient {
     private String carbohydrates;
     private String calories;
     private String image;
-    private String image_mobile;
-    private String image_large;
-    private String __v;
+    private String imageMobile;
+    private String imageLarge;
+    private String v;
 }

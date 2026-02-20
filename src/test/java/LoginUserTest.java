@@ -27,11 +27,10 @@ public class LoginUserTest {
         createUser = new CreateUser(email, password, name);
         Response response = Steps.createUser(createUser)
                 .then()
-                .log().all()
-                .statusCode(SC_OK)
-                .extract().response();
+                .log().all().extract().response();
 
-        accessToken = response.path(Constant.paramAToken);
+        accessToken = response.path(Constant.PARAM_ACCESS_TOKEN);
+        response.then().statusCode(SC_OK);
     }
 
     @After
@@ -51,9 +50,9 @@ public class LoginUserTest {
                 .then()
                 .log().all()
                 .statusCode(SC_OK)
-                .body(Constant.paramSuccess, equalTo(true))
-                .body(Constant.paramUserEmail, equalTo(email))
-                .body(Constant.paramUserName, equalTo(name));
+                .body(Constant.PARAM_SUCCESS, equalTo(true))
+                .body(Constant.PARAM_USER_EMAIL, equalTo(email))
+                .body(Constant.PARAM_USER_NAME, equalTo(name));
     }
 
     @Test
@@ -65,8 +64,8 @@ public class LoginUserTest {
                 .then()
                 .log().all()
                 .statusCode(SC_UNAUTHORIZED)
-                .body(Constant.paramSuccess, equalTo(false))
-                .body(Constant.paramMessage, equalTo(Constant.messageFieldIncorrect));
+                .body(Constant.PARAM_SUCCESS, equalTo(false))
+                .body(Constant.PARAM_MESSAGE, equalTo(Constant.MESSAGE_FIELD_INSORRECT));
     }
 
     @Test
@@ -78,7 +77,7 @@ public class LoginUserTest {
                 .then()
                 .log().all()
                 .statusCode(SC_UNAUTHORIZED)
-                .body(Constant.paramSuccess, equalTo(false))
-                .body(Constant.paramMessage, equalTo(Constant.messageFieldIncorrect));
+                .body(Constant.PARAM_SUCCESS, equalTo(false))
+                .body(Constant.PARAM_MESSAGE, equalTo(Constant.MESSAGE_FIELD_INSORRECT));
     }
 }

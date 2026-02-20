@@ -38,8 +38,8 @@ public class CreateUserNegativeTest {
                 .then()
                 .log().all()
                 .statusCode(SC_FORBIDDEN)
-                .body(Constant.paramSuccess, equalTo(false))
-                .body(Constant.paramMessage, equalTo(Constant.messageFieldRequired));
+                .body(Constant.PARAM_SUCCESS, equalTo(false))
+                .body(Constant.PARAM_MESSAGE, equalTo(Constant.MESSAGE_FIELD_REQUIRED));
     }
 
 }

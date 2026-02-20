@@ -41,14 +41,16 @@ public class CreateUserPositiveTest {
         CreateUser user = new CreateUser(email, password, name);
         Response response = Steps.createUser(user)
                 .then()
-                .log().all()
-                .statusCode(SC_OK)
-                .body(Constant.paramSuccess, equalTo(true))
-                .body(Constant.paramUserEmail, equalTo(email))
-                .body(Constant.paramUserName, equalTo(name))
-                .extract().response();
+                .log().all().extract().response();
 
-        accessToken = response.path(Constant.paramAToken);
+        accessToken = response.path(Constant.PARAM_ACCESS_TOKEN);
+
+        response.then().statusCode(SC_OK)
+                .body(Constant.PARAM_SUCCESS, equalTo(true))
+                .body(Constant.PARAM_USER_EMAIL, equalTo(email))
+                .body(Constant.PARAM_USER_NAME, equalTo(name));
+
+
     }
 
     @Test
@@ -61,19 +63,21 @@ public class CreateUserPositiveTest {
         Response response = Steps.createUser(user)
                 .then()
                 .log().all()
-                .statusCode(SC_OK)
-                .body(Constant.paramSuccess, equalTo(true))
-                .body(Constant.paramUserEmail, equalTo(email))
-                .body(Constant.paramUserName, equalTo(name))
-                .extract().response();
+                .statusCode(SC_OK).extract().response();
+
+        accessToken = response.path(Constant.PARAM_ACCESS_TOKEN);
+
+        response.then().body(Constant.PARAM_SUCCESS, equalTo(true))
+                .body(Constant.PARAM_USER_EMAIL, equalTo(email))
+                .body(Constant.PARAM_USER_NAME, equalTo(name));
+
 
         Steps.createUser(user2)
                 .then()
                 .log().all()
                 .statusCode(SC_FORBIDDEN)
-                .body(Constant.paramSuccess, equalTo(false))
-                .body(Constant.paramMessage, equalTo(Constant.messageUserExists));
+                .body(Constant.PARAM_SUCCESS, equalTo(false))
+                .body(Constant.PARAM_MESSAGE, equalTo(Constant.MESSAGE_USER_EXISTS));
 
-        accessToken = response.path(Constant.paramAToken);
     }
 }

@@ -1,16 +1,16 @@
 public class Constant {
-    public static String paramAToken = "accessToken";
-    public static String paramSuccess = "success";
-    public static String paramMessage = "message";
-    public static String paramOrder = "order";
-    public static String paramUserEmail = "user.email";
-    public static String paramUserName = "user.name";
-    public static String paramOrdIngrId = "order.ingredients._id";
-    public static String paramOrdOwnName = "order.owner.name";
-    public static String paramOrdOwnEmail = "order.owner.email";
+    public static String PARAM_ACCESS_TOKEN = "accessToken";
+    public static String PARAM_SUCCESS = "success";
+    public static String PARAM_MESSAGE = "message";
+    public static String PARAM_ORDER = "order";
+    public static String PARAM_USER_EMAIL = "user.email";
+    public static String PARAM_USER_NAME = "user.name";
+    public static String PARAM_ORD_INGR_ID = "order.ingredients._id";
+    public static String PARAM_ORD_OWN_NAME = "order.owner.name";
+    public static String PARAM_ORD_OWN_EMAIL = "order.owner.email";
 
-    public static String messageUserExists = "User already exists";
-    public static String messageIngedientsRequired = "Ingredient ids must be provided";
-    public static String messageFieldRequired = "Email, password and name are required fields";
-    public static String messageFieldIncorrect = "email or password are incorrect";
+    public static String MESSAGE_USER_EXISTS = "User already exists";
+    public static String MESSAGE_INGREDIENTS_REQUIRED = "Ingredient ids must be provided";
+    public static String MESSAGE_FIELD_REQUIRED = "Email, password and name are required fields";
+    public static String MESSAGE_FIELD_INSORRECT = "email or password are incorrect";
 }

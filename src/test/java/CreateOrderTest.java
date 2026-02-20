@@ -20,6 +20,10 @@ public class CreateOrderTest {
         email = "email" + System.currentTimeMillis() + "@yandex.ru";
         password = "1234pass";
         name = "Leonidas";
+
+        CreateUser createUser = new CreateUser(email, password, name);
+        Response response = Steps.createUser(createUser);
+        accessToken = response.path(Constant.PARAM_ACCESS_TOKEN);
     }
 
     @After
@@ -34,28 +38,24 @@ public class CreateOrderTest {
     @DisplayName("Заказ с авторизацией")
     @Description("Проверка успешного создания заказа с предварительной авторизацией пользователя")
     public void orderWithAuthorizationTest() {
-        CreateUser createUser = new CreateUser(email, password, name);
-        Response response = Steps.createUser(createUser);
-        accessToken = response.path(Constant.paramAToken);
-
         LoginUser loginUser = new LoginUser(email, password);
         Steps.loginUser(accessToken, loginUser);
 
         IngredientResponse ingredientResponse =  Steps.getIngredietns();
-        String ingredientId0 = ingredientResponse.getData().get(0).get_id();
-        String ingredientId1 = ingredientResponse.getData().get(1).get_id();
+        String firstIngredient = ingredientResponse.getData().get(0).getId();
+        String secondIngredient = ingredientResponse.getData().get(1).getId();
 
-        String[] ingredients = new String[]{ingredientId0, ingredientId1};
+        String[] ingredients = new String[]{firstIngredient, secondIngredient};
         CreateOrder order = new CreateOrder(ingredients);
 
         Steps.createOrderWithLogin(accessToken, order)
                 .then().log().all()
                 .statusCode(SC_OK)
-                .body(Constant.paramSuccess, equalTo(true))
-                .body(Constant.paramOrdIngrId, hasItem(ingredientId0))
-                .body(Constant.paramOrdIngrId, hasItem(ingredientId1))
-                .body(Constant.paramOrdOwnName, equalTo(name))
-                .body(Constant.paramOrdOwnEmail, equalTo(email));
+                .body(Constant.PARAM_SUCCESS, equalTo(true))
+                .body(Constant.PARAM_ORD_INGR_ID, hasItem(firstIngredient))
+                .body(Constant.PARAM_ORD_INGR_ID, hasItem(secondIngredient))
+                .body(Constant.PARAM_ORD_OWN_NAME, equalTo(name))
+                .body(Constant.PARAM_ORD_OWN_EMAIL, equalTo(email));
 
     }
 
@@ -64,27 +64,23 @@ public class CreateOrderTest {
     @Description("Проверка успешного создания заказа без предварительной авторизации пользователя")
     public void orderWithoutAuthorizationTest() {
         IngredientResponse ingredientResponse =  Steps.getIngredietns();
-        String ingredientId0 = ingredientResponse.getData().get(0).get_id();
-        String ingredientId1 = ingredientResponse.getData().get(1).get_id();
+        String firstIngredient = ingredientResponse.getData().get(0).getId();
+        String secondIngredient = ingredientResponse.getData().get(1).getId();
 
-        String[] ingredients = new String[]{ingredientId0, ingredientId1};
+        String[] ingredients = new String[]{firstIngredient, secondIngredient};
         CreateOrder order = new CreateOrder(ingredients);
 
         Steps.createOrderWithoutLogin(order)
                 .then().log().all()
                 .statusCode(SC_OK)
-                .body(Constant.paramSuccess, equalTo(true))
-                .body(Constant.paramOrder, notNullValue());
+                .body(Constant.PARAM_SUCCESS, equalTo(true))
+                .body(Constant.PARAM_ORDER, notNullValue());
     }
 
     @Test
     @DisplayName("Заказ без ингредиентов")
     @Description("Проверка возникновения ошибки 400 при заказе без ингредиентов")
     public void orderWithoutIngredientsTest() {
-        CreateUser createUser = new CreateUser(email, password, name);
-        Response response = Steps.createUser(createUser);
-        accessToken = response.path(Constant.paramAToken);
-
         LoginUser loginUser = new LoginUser(email, password);
         Steps.loginUser(accessToken, loginUser);
 
@@ -94,8 +90,8 @@ public class CreateOrderTest {
         Steps.createOrderWithLogin(accessToken, order)
                 .then().log().all()
                 .statusCode(SC_BAD_REQUEST)
-                .body(Constant.paramSuccess, equalTo(false))
-                .body(Constant.paramMessage, equalTo(Constant.messageIngedientsRequired));
+                .body(Constant.PARAM_SUCCESS, equalTo(false))
+                .body(Constant.PARAM_MESSAGE, equalTo(Constant.MESSAGE_INGREDIENTS_REQUIRED));
 
     }
 
